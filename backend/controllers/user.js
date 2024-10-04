@@ -67,11 +67,11 @@ export const Register =async(req,res)=>{
         }
 
         //finding user and it will return true if user is present and false if not
-        const user = await User.findOne({email}); 
+        const user = await User.findOne({email});
         if(user){
             return res.status(401).json({
                 message:"This email is already used",
-                success:false
+                success:false,
             })
         }
 
@@ -82,8 +82,8 @@ export const Register =async(req,res)=>{
             password:hashedPassword
         })
         return res.status(201).json({
-            message:"Account created successfully",
-            
+            message:"Account created successfully.",
+            success:true,
         })
 
     } catch (error) {
