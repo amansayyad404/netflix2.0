@@ -4,6 +4,8 @@ import axios from "axios";
 import { API_END_POINT } from '../utils/constant';
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"
+import { setUser } from '../redux/userSlice';
 
 
 const Login = () => {
@@ -13,7 +15,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const navigate = useNavigate();
-
+  const dispatch = useDispatch(); //used to modifie redux state
 
   // ---------------------------------
   const loginHandeler = () => { //toggel between pages
@@ -34,14 +36,17 @@ const Login = () => {
             'Content-Type': 'application/json'
           },
           withCredentials: true
-        }); //path
+        });//path
 
-        console.log(res)
+
         if (res.data.success) {
           toast.success(res.data.message);//toast msg
         }
+        console.log(res.data.user)
+        dispatch(setUser(res.data.user));//setUser is action from userSlice we are passing data which will be recived in action.payload
         navigate("/browse");// when login redirect to browse page
-      } catch (error) {
+      }
+      catch (error) {
         toast.error(error.response.data.message);//toast msg
 
         console.log(error)
