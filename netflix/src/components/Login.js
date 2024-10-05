@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Header from './Header'
+import Header from './Header';
 import axios from "axios";
 import { API_END_POINT } from '../utils/constant';
-
-
+import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const [fullName, setfullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
-
+  const navigate = useNavigate();
 
 
   // ---------------------------------
@@ -26,23 +26,50 @@ const Login = () => {
 
     if (isLogin) { //if useState is login then login else register
 
-      const user = {email,password};
+      const user = { email, password };
       try {
-        const res = await axios.post(`${API_END_POINT}/login`, user); //path
+
+        const res = await axios.post(`${API_END_POINT}/login`, user, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+        }); //path
+
         console.log(res)
+        if (res.data.success) {
+          toast.success(res.data.message);//toast msg
+        }
+        navigate("/browse");// when login redirect to browse page
       } catch (error) {
+        toast.error(error.response.data.message);//toast msg
+
         console.log(error)
 
       }
 
     } else {//register
 
-      const user = {fullName, email, password};
+      const user = { fullName, email, password };
       try {
-        const res = await axios.post(`${API_END_POINT}/register`,user);//path
+
+        const res = await axios.post(`${API_END_POINT}/register`, user, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          withCredentials: true
+
+        });//path
+
         console.log(res);
+        if (res.data.success) {
+          toast.success(res.data.message);//toast msg
+        }
+        setIsLogin(true);//it will redirect to login page as state is true
+
       } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
+        toast.error(error.response.data.message);//toast msg
+        console.log(error);
       }
     }
 
