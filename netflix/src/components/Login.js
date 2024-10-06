@@ -4,8 +4,8 @@ import axios from "axios";
 import { API_END_POINT } from '../utils/constant';
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"
-import { setUser } from '../redux/userSlice';
+import { useDispatch, useSelector } from "react-redux"
+import { setLoading, setUser } from '../redux/userSlice';
 
 
 const Login = () => {
@@ -17,6 +17,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch(); //used to modifie redux state
 
+  const isLoading=useSelector((store)=>store.app.isLoading);
+
   // ---------------------------------
   const loginHandeler = () => { //toggel between pages
     setIsLogin(!isLogin);
@@ -25,7 +27,7 @@ const Login = () => {
 
   const getInputData = async (e) => {
     e.preventDefault();
-
+    dispatch(setLoading(true));//loding start when button is clicked
     if (isLogin) { //if useState is login then login else register
 
       const user = { email, password };
@@ -52,8 +54,12 @@ const Login = () => {
         console.log(error)
 
       }
+      finally{
+        dispatch(setLoading(false));//set loading false when get data
+      }
 
     } else {//register
+      dispatch(setLoading(true));//loding start when button is clicked
 
       const user = { fullName, email, password };
       try {
@@ -75,6 +81,9 @@ const Login = () => {
       } catch (error) {
         toast.error(error.response.data.message);//toast msg
         console.log(error);
+      }
+      finally{
+        dispatch(setLoading(false));
       }
     }
 
@@ -102,7 +111,7 @@ const Login = () => {
 
           <input value={email} onChange={(e) => { setEmail(e.target.value) }} type='email' placeholder='email' className=' outline-none p-3 my-2 rounded-sm bg-gray-800 text-white ' />
           <input value={password} onChange={(e) => { setpassword(e.target.value) }} type='password' placeholder='password' className=' outline-none p-3 my-2 rounded-sm bg-gray-800 text-white ' />
-          <button className='bg-red-500 mt-6 p-3 text-white font-medium rounded-sm'>{isLogin ? "Login" : "Signup"}</button>
+          <button className='bg-red-500 mt-6 p-3 text-white font-medium rounded-sm'>{`${isLoading ? "loading...":(isLogin?"Login":"Signup")}`}</button>
           <p className='text-white mt-2'>{isLogin ? "New to Netflix? " : "Already have an account?"}<span onClick={loginHandeler} className=' ml-1 text-blue-500 cursor-pointer '>{isLogin ? " signup" : " login"}</span></p>
         </div>
 
