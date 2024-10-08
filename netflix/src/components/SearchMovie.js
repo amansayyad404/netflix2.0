@@ -35,17 +35,17 @@ const SearchMovie = () => {
 
     return (
         <>
-            <div className='flex justify-center pt-[10%] w-[100%]'>
+            <div className='flex justify-center pt-[10%] w-[100%] bg-black'>
 
                 <form onSubmit={submitHandler} className='w-[50%]'>
-                    <div className='flex justify-between shadow-md border-2 p-2 border-gray-200 rounded-lg w-[100%] '>
+                    <div className='flex justify-between shadow-lg border-2 p-2 border-gray-400 rounded-lg w-[100%]  mb-5'>
                        
                         <input
                             value={searchMovie}
                             onChange={(e) => {
                                 setSearchMovie(e.target.value)
                             }}
-                            className='w-full outline-none rounded-md text-lg'
+                            className='w-full outline-none rounded-md text-lg bg-black text-white '
                             type="text"
                             placeholder='Search Movies...' />
 

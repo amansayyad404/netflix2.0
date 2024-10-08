@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { IoIosArrowDropdown } from "react-icons/io";
+import { FaRegUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux"
 import { API_END_POINT } from '../utils/constant';
 import { setUser } from '../redux/userSlice';
@@ -45,7 +46,7 @@ const Header = () => {
 
       {user &&
         <div className='flex items-center'>
-          <IoIosArrowDropdown size="24px" color='white' />
+          <FaRegUser size="24px" color='white' />
           <h1 className='text-lg font-medium text-white'>{user.fullName}</h1>
           <div className='ml-4'>
             <button onClick={logoutHandeler} className='bg-red-800 text-white px-4 py-2'>Logout</button>
